@@ -1,4 +1,4 @@
-REST API веб сервер, с использованием технологий:/n
+REST API веб сервер, с использованием технологий:
 1)Bottle python framework
 2)Redis no sql BD
 
