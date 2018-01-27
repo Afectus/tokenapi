@@ -10,21 +10,23 @@ portdb = 6379
 numberdb = 0
 #    Подключаемся к базе
 r = redis.StrictRedis(host=hostdb, port=portdb, db=numberdb)
-#    Ф-ия для выдачи токеннов
 
 #    Задаем Возможные символы в ключе
-stringForToken = 'qw'
+stringForToken = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'
 #    Задаем длинну ключа
-lenKey = int(1)
-
+lenKey = int(4)
 
 #    Высчитываем оставшееся кол-во ключей
+
+
 def get_number_token():
     lenstringForToken = int(len(stringForToken))
     y = lenstringForToken ** lenKey
     getTokenList = int(len(r.keys("*")))
     x = y - getTokenList
     return x
+
+#    Ф-ия для выдачи токеннов
 
 
 def maketoken():
