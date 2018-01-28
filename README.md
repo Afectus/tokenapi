@@ -1,18 +1,26 @@
 REST API веб сервер, с использованием технологий:
+
 1)Bottle python framework
+
 2)Redis no sql BD
 
 Для запуска сервера используется файл main.py
 Для работы сервиса необходимо:
+
 1)Коннект с redis-server
+
 2)Установленные пакеты из requirements.txt
 
 Конфигурацию подключения к redis-server в файле config.py
 
 В api объявлены следующие методы:
+
 1)GET
+
 2)PUT
+
 3)POST
+
 4)DELETE
 
 Метод POST используется для получения ключа.
