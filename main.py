@@ -1,28 +1,17 @@
 from bottle import route, run
 import redis
 import random
-#    Задаем конфигурацию для подключения к базе
-#    Задаем хост базы
-hostdb = 'localhost'
-#    Задаем порт базы
-portdb = 6379
-#    Задаем номер базы
-numberdb = 0
+import config
+
+
 #    Подключаемся к базе
-r = redis.StrictRedis(host=hostdb, port=portdb, db=numberdb)
-
-#    Задаем Возможные символы в ключе
-stringForToken = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'
-#    Задаем длинну ключа
-lenKey = int(4)
-
-#    Высчитываем оставшееся кол-во ключей
+bdcon = redis.StrictRedis(host=config.host, port=config.port, db=config.number)
 
 
 def get_number_token():
-    lenstringForToken = int(len(stringForToken))
-    y = lenstringForToken ** lenKey
-    getTokenList = int(len(r.keys("*")))
+    lenstringForToken = int(len(config.stringForToken))
+    y = lenstringForToken ** config.lenKey
+    getTokenList = int(len(bdcon.keys("*")))
     x = y - getTokenList
     return x
 
@@ -37,17 +26,17 @@ def maketoken():
     else:
         token = ''
         while token == '':
-            for x in range(lenKey):
-                randomKeyGenerate = random.choice(stringForToken)
+            for x in range(config.lenKey):
+                randomKeyGenerate = random.choice(config.stringForToken)
                 token = token + randomKeyGenerate
 #    Переменная для проверки получившегося ключа на предмет повторения
-                a = r.hlen(token)
+            a = bdcon.hlen(token)
             if a != 0:
                 token = ''
             else:
                 return token
 
-#    Объявлем методы и делаем ссылки
+#    Объявлем методы
 
 
 @route('/api/get_token', method='POST')
@@ -56,35 +45,35 @@ def add_token():
     if token is False:
         print("Ключи кончились")
     else:
-        r.hset(name=token, key="Token", value=token)
+        bdcon.hset(name=token, key="Token", value=token)
         print("Вы получили ключ:", token)
         print ("Ключей осталось:", get_number_token())
 
 
 @route('/api/activate_token/<token>', method='PUT')
 def activate_token(token="<token>"):
-    if r.hlen(token) == 0:
+    if bdcon.hlen(token) == 0:
         print("Ключ не выдан")
-    elif r.hlen(token) == 1:
-        r.hset(name=token, key="activated", value="yes")
+    elif bdcon.hlen(token) == 1:
+        bdcon.hset(name=token, key="activated", value="yes")
         print("Вы активировали ключ", token)
-    elif r.hlen(token) == 2:
+    elif bdcon.hlen(token) == 2:
         print("Ключ уже активирован")
 
 
 @route('/api/get_token_status/<token>', method='GET')
 def get_token_status(token="<token>"):
-    if r.hlen(token) == 0:
+    if bdcon.hlen(token) == 0:
         print("Ключ не выдан")
-    elif r.hlen(token) == 1:
+    elif bdcon.hlen(token) == 1:
         print("Ключ выдан, но не активирован")
-    elif r.hlen(token) == 2:
+    elif bdcon.hlen(token) == 2:
         print("Ключ выдан и активирован")
 
 
 @route('/api/get_number_token', method='GET')
 def print_number_token():
-	print ("Ключей осталось:", get_number_token())
+    print ("Ключей осталось:", get_number_token())
 
 run(host='localhost', port=8080, debug=True)
 
