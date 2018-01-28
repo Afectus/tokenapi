@@ -75,5 +75,6 @@ def get_token_status(token="<token>"):
 def print_number_token():
     print ("Ключей осталось:", get_number_token())
 
-run(host='localhost', port=8080, debug=True)
+if __name__ == "__main__":
+    run(host='localhost', port=8080, debug=True)
 
