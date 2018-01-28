@@ -43,37 +43,37 @@ def maketoken():
 def add_token():
     token = maketoken()
     if token is False:
-        print("Ключи кончились")
+        return {"Статус ключа:": "Ключи кончились"}
     else:
         bdcon.hset(name=token, key="Token", value=token)
-        print("Вы получили ключ:", token)
-        print ("Ключей осталось:", get_number_token())
+        return {"Ваш ключ:": token, "Ключей осталось:": get_number_token()}
 
 
 @route('/api/activate_token/<token>', method='PUT')
 def activate_token(token="<token>"):
     if bdcon.hlen(token) == 0:
-        print("Ключ не выдан")
+        return {"Статус ключа:": "Ключ не выдан"}
     elif bdcon.hlen(token) == 1:
         bdcon.hset(name=token, key="activated", value="yes")
-        print("Вы активировали ключ", token)
+        return {"Статус ключа:": "Вы активировали ключ " + token}
     elif bdcon.hlen(token) == 2:
-        print("Ключ уже активирован")
+        return {"Статус ключа:": "Ключ уже активирован"}
 
 
 @route('/api/get_token_status/<token>', method='GET')
 def get_token_status(token="<token>"):
     if bdcon.hlen(token) == 0:
-        print("Ключ не выдан")
+        return {"Статус ключа:": "Ключ не выдан"}
     elif bdcon.hlen(token) == 1:
-        print("Ключ выдан, но не активирован")
+        return {"Статус ключа:": "Ключ выдан, но не активирован"}
     elif bdcon.hlen(token) == 2:
-        print("Ключ выдан и активирован")
+        return {"Статус ключа:": "Ключ выдан и активирован"}
 
 
 @route('/api/get_number_token', method='GET')
 def print_number_token():
-    print ("Ключей осталось:", get_number_token())
+    return {"Ключей осталось:": get_number_token()}
+
 
 if __name__ == "__main__":
     run(host='localhost', port=8080, debug=True)
