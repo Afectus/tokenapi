@@ -9,5 +9,5 @@ number = 0
 #    Задаем Возможные символы в ключе
 stringForToken = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'
 #    Задаем длинну ключа
-lenKey = int(4)
+lenKey = 4
 
