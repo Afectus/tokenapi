@@ -2,18 +2,15 @@ import unittest
 import main
 import re
 
-text = 'abcdfghijk'
-
-parser = re.search('a[b-f]*f')
-print(parser.group()) # 'abcdf'
+#    Для роверки генерации токена
+#    не забываем поднять базу
 
 
-a = main.add_token()
 class TestToken(unittest.TestCase):
 
-
-    def test_maketoken(self):
-       self.assertFalse(a)
+    def test_add_token(self):
+        token = main.add_token()
+        self.assertTrue(main.bdcon.hlen(token['Ваш ключ:']) == 1)
 
 
 if __name__ == '__main__':
