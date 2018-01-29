@@ -9,7 +9,7 @@ bdcon = redis.StrictRedis(host=config.host, port=config.port, db=config.number)
 
 
 def get_number_token():
-    lenstringForToken = int(len(config.stringForToken))
+    lenstringForToken = len(config.stringForToken)
     y = lenstringForToken ** config.lenKey
     getTokenList = int(len(bdcon.keys("*")))
     x = y - getTokenList
