@@ -10,7 +10,7 @@ class TestToken(unittest.TestCase):
 
     def test_add_token(self):
         token = main.add_token()
-        self.assertTrue(main.bdcon.hlen(token['Ваш ключ:']) == 1)
+        self.assertTrue(main.bdcon.hlen(token["key:"]) == 1)
 
 
 if __name__ == '__main__':
